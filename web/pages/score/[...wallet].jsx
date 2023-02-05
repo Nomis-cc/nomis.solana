@@ -16,24 +16,41 @@ import Input from "../../components/global/Input";
 import WalletData from "../../components/WalletData";
 import WalletUser from "../../components/WalletUser";
 import { blockchains } from "../../utilities/blockchains";
+import Tokens from "../../components/tokens";
 
 export async function getServerSideProps(context) {
   const blockchainSlug = await context.query.wallet[0];
   const fullAddress = await context.query.wallet[1];
 
   const query = new URLSearchParams(context.query);
-  const action = query.get('action');
-  const apiHost = process.env.API_HOST !== undefined ? process.env.API_HOST : "https://api.nomis.cc";
-  const xummApiKey = process.env.XUMM_API_KEY !== undefined ? process.env.XUMM_API_KEY : "c52e47df-b650-4065-afb5-a7e363fcac9c";
+  const action = query.get("action");
+  const apiHost =
+    process.env.API_HOST !== undefined
+      ? process.env.API_HOST
+      : "https://api.nomis.cc";
+  const xummApiKey =
+    process.env.XUMM_API_KEY !== undefined
+      ? process.env.XUMM_API_KEY
+      : "c52e47df-b650-4065-afb5-a7e363fcac9c";
 
-  return { props: { blockchainSlug, fullAddress, action, apiHost, xummApiKey } };
+  return {
+    props: { blockchainSlug, fullAddress, action, apiHost, xummApiKey },
+  };
 }
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-export default function Scored({ blockchainSlug, fullAddress, action, apiHost, xummApiKey }) {
+export default function Scored({
+  blockchainSlug,
+  fullAddress,
+  action,
+  apiHost,
+  xummApiKey,
+}) {
   const blockchain = blockchains.find((b) => b.slug === blockchainSlug).apiSlug;
-  const ecoTokenAddress = blockchains.find((b) => b.slug === blockchainSlug).ecoTokenAddress;
+  const ecoTokenAddress = blockchains.find(
+    (b) => b.slug === blockchainSlug
+  ).ecoTokenAddress;
 
   const { data: wallet, error } = useSWR(
     blockchains.find((b) => b.slug === blockchainSlug).group === "eco"
@@ -103,13 +120,16 @@ export default function Scored({ blockchainSlug, fullAddress, action, apiHost, x
         <Input blockchain={blockchain} fullAddress={fullAddress} />
         {wallet.succeeded ? (
           <div className="scored">
-            <WalletData
-              wallet={wallet.data}
-              blockchain={blockchain}
-              ecoTokenAddress={ecoTokenAddress}
-              group={blockchains.find((b) => b.slug === blockchainSlug).group}
-              fullAddress={fullAddress}
-            />
+            <div>
+              <Tokens wallet={wallet} />
+              <WalletData
+                wallet={wallet.data}
+                blockchain={blockchain}
+                ecoTokenAddress={ecoTokenAddress}
+                group={blockchains.find((b) => b.slug === blockchainSlug).group}
+                fullAddress={fullAddress}
+              />
+            </div>
             <WalletUser
               wallet={wallet.data}
               blockchainSlug={blockchainSlug}

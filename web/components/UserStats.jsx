@@ -14,8 +14,7 @@ export default function UserStats({ wallet, blockchain, group }) {
       if (blockchains[i].slug === blockchain) {
         if (group === "eco") {
           setCoin(wallet.stats.token);
-        }
-        else {
+        } else {
           setCoin(blockchains[i].coin);
         }
       }
@@ -35,14 +34,14 @@ export default function UserStats({ wallet, blockchain, group }) {
             </div>
             {/* <div className="container">
               <span className="units">$</span>
-              {wallet.stats.balanceUSD < 1000
-                ? wallet.stats.balanceUSD
-                : wallet.stats.balanceUSD < 1000000
-                ? Math.floor((wallet.stats.balanceUSD / 1000) * 100) / 100 + "k"
-                : wallet.stats.balanceUSD < 1000000000
-                ? Math.floor((wallet.stats.balanceUSD / 1000000) * 100) / 100 +
+              {wallet.stats.nativeBalanceUSD < 1000
+                ? wallet.stats.nativeBalanceUSD
+                : wallet.stats.nativeBalanceUSD < 1000000
+                ? Math.floor((wallet.stats.nativeBalanceUSD / 1000) * 100) / 100 + "k"
+                : wallet.stats.nativeBalanceUSD < 1000000000
+                ? Math.floor((wallet.stats.nativeBalanceUSD / 1000000) * 100) / 100 +
                   "m"
-                : Math.floor((wallet.stats.balanceUSD / 1000000000) * 100) /
+                : Math.floor((wallet.stats.nativeBalanceUSD / 1000000000) * 100) /
                     100 +
                   "b"}
             </div> */}
